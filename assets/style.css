@@ -387,6 +387,17 @@ section.sand{background:linear-gradient(180deg,#fff,var(--bg-sand) 42%,var(--bg-
 .role .en{font-family:var(--f-latin);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
   color:var(--gold);margin-bottom:14px;display:block}
 .role h3{font-size:clamp(20px,2.2vw,28px);max-width:24ch;margin-bottom:14px}
+/* on narrow screens the number hit its 60px floor and sat on top of the
+   heading - shrink it and keep a lane clear so the text can never run under */
+@media (max-width:900px){
+  .role .big{font-size:50px;right:16px;top:12px}
+  .role .en,.role h3{padding-right:68px}
+  .role h3{max-width:none}
+}
+@media (max-width:560px){
+  .role .big{font-size:40px;right:14px;top:14px}
+  .role .en,.role h3{padding-right:56px}
+}
 
 /* ---------- 17. QUOTE ---------- */
 .quote{text-align:center;max-width:24ch;margin-inline:auto;font-family:var(--f-display);
