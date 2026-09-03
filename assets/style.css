@@ -181,15 +181,6 @@ body.menu-open #menu a{transform:translateY(0)}
 @keyframes cue{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
 @media (max-width:720px){.scroll-cue{display:none}}
 
-/* ---------- 8. MARQUEE ---------- */
-.marq{border-block:1px solid var(--line);padding:15px 0;overflow:hidden;background:var(--bg-soft)}
-.marq-t{display:flex;gap:36px;white-space:nowrap;width:max-content;animation:slide 44s linear infinite}
-.marq:hover .marq-t{animation-play-state:paused}
-@keyframes slide{to{transform:translateX(-50%)}}
-.marq-t span{font-family:var(--f-display);font-size:clamp(14px,1.5vw,19px);color:var(--ink-3);
-  display:flex;align-items:center;gap:36px}
-.marq-t span::after{content:"\25C6";color:var(--gold);font-size:8px}
-
 /* ---------- 9. SECTION SHELL ---------- */
 section{position:relative;padding-block:clamp(70px,11vh,150px);scroll-margin-top:var(--nav-h)}
 section.alt{background:var(--bg-soft)}
@@ -217,7 +208,7 @@ section.sand{background:linear-gradient(180deg,#fff,var(--bg-sand) 42%,var(--bg-
 @media (prefers-reduced-motion:reduce){
   [data-reveal],[data-reveal].in{opacity:1!important;transform:none!important;clip-path:none!important}
   .hero h1 .ln>span,.sp .w>i{transform:none!important}
-  .marq-t,.hero-sun,.scroll-cue i::after{animation:none}
+  .hero-sun,.scroll-cue i::after{animation:none}
 }
 
 .orn-wrap{padding-block:clamp(28px,6vh,64px)}
@@ -547,29 +538,64 @@ footer p{color:rgba(239,233,223,.55);font-size:14px;margin-top:16px;max-width:40
 .sub .banner{margin-bottom:clamp(20px,3vh,34px)}
 
 
-/* ---------- 22. HERO QUICK-JUMP (fills the tall mobile hero) ---------- */
-.hero-jump{display:none}
-@media (max-width:900px){
-  .hero{min-height:auto}
-  .hero-in{padding-top:calc(var(--nav-h) + 26px);padding-bottom:clamp(120px,20vh,190px)}
-  .hero-sun{top:26%;width:min(86vw,460px)}
-  .temple{width:min(1080px,104vw)}
-  .temple.back{width:min(1290px,126vw)}
-  .temple.mid{width:min(1180px,115vw)}
+/* ---------- 22. HERO PHOTOGRAPH ---------- */
+.hero{min-height:auto;display:block;align-items:stretch}
+.hero-in{padding-top:calc(var(--nav-h) + clamp(30px,8vh,86px));
+  padding-bottom:clamp(26px,4.5vh,54px)}
+.hero-sun{top:34%;width:min(52vw,520px);opacity:.9}
 
-  .hero-jump{display:grid;gap:0;margin-top:26px;
-    border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
-  .hero-jump a{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;
-    column-gap:14px;padding:13px 2px;border-bottom:1px solid var(--line);
-    transition:padding-left .4s var(--ease),color .3s}
-  .hero-jump a:last-child{border-bottom:0}
-  .hero-jump a:active{padding-left:8px;color:var(--gold-dp)}
-  .hero-jump em{font-family:var(--f-latin);font-style:normal;font-size:10px;letter-spacing:.22em;
-    color:var(--gold)}
-  .hero-jump b{font-family:var(--f-display);font-weight:400;font-size:17px}
-  .hero-jump span{grid-column:2/-1;font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:1px}
+.hero-photo{position:relative;margin:0;width:100%;overflow:hidden;isolation:isolate;
+  height:clamp(340px,54vh,620px);background:linear-gradient(180deg,#fff,var(--bg-sand))}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.045);will-change:opacity,transform;
+  transition:opacity 1.3s var(--ease)}
+.hero-photo img.on{opacity:1;transform:scale(1.12);
+  transition:opacity 1.3s var(--ease),transform 9s linear}
+.hp-fallback{position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);
+  width:min(1080px,88vw);height:auto;color:#c3a97e}
+.hero-photo.has-photo .hp-fallback{display:none}
+.hero-photo::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.34) 9%,rgba(255,255,255,0) 24%),
+             linear-gradient(0deg,rgba(16,12,8,.74) 0%,rgba(16,12,8,.28) 26%,rgba(16,12,8,0) 52%)}
+.hero-photo.loading::after{opacity:.4}
+.hero-photo figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:0 var(--pad) clamp(18px,3vh,34px);color:#fff}
+.hero-photo figcaption span{font-family:var(--f-latin);font-size:10px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--gold-lt);display:block}
+.hero-photo figcaption b{display:block;margin-top:5px;font-family:var(--f-display);font-weight:400;
+  font-size:clamp(19px,2.4vw,30px);letter-spacing:-.01em;text-shadow:0 1px 18px rgba(18,14,10,.45)}
+.hp-dots{position:absolute;right:var(--pad);bottom:clamp(20px,3.2vh,36px);z-index:3;
+  display:flex;gap:7px}
+.hp-dots button{width:26px;height:3px;border-radius:2px;background:rgba(255,255,255,.34);
+  position:relative;overflow:hidden;transition:background .4s}
+.hp-dots button:hover{background:rgba(255,255,255,.62)}
+.hp-dots button i{position:absolute;inset:0;width:0;background:var(--gold-lt);display:block}
+.hp-dots button.on i{width:100%;transition:width var(--slide-ms,5600ms) linear}
+.hero-photo:not(.has-photo) .hp-dots{display:none}
+.hero-photo figcaption span,.hero-photo figcaption b{transition:opacity .5s var(--ease)}
+.hero-photo.swapping figcaption span,.hero-photo.swapping figcaption b{opacity:0}
+.hero-photo:not(.has-photo) figcaption{color:var(--ink)}
+.hero-photo:not(.has-photo) figcaption span{color:var(--gold-dp)}
+.hero-photo:not(.has-photo) figcaption b{text-shadow:none}
+.hero-photo:not(.has-photo)::after{background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 22%)}
+@media (max-width:560px){.hp-dots button{width:18px}}
+@media (prefers-reduced-motion:reduce){
+  .hero-photo img,.hero-photo img.on{transition:opacity .2s;transform:none}
+  .hp-dots button.on i{transition:none;width:100%}
+}
+.hero-photo .credit{top:auto;bottom:12px;right:12px}
+.hero-photo:hover .credit{opacity:1}
+
+.hero .scroll-cue{bottom:clamp(70px,11vh,120px);color:rgba(255,255,255,.85);z-index:3}
+.hero .scroll-cue i{background:rgba(255,255,255,.35)}
+.hero .scroll-cue i::after{background:var(--gold-lt)}
+
+@media (max-width:900px){
+  .hero-in{padding-top:calc(var(--nav-h) + 26px);padding-bottom:26px}
+  .hero-sun{top:30%;width:min(86vw,460px)}
+  .hero-photo{height:clamp(340px,52vh,480px)}
 }
 @media (max-width:560px){
-  .hero-jump b{font-size:16px}
-  .hero-jump span{font-size:11px}
+  .hero-photo{height:clamp(320px,50vh,420px)}
+  .hero-photo figcaption b{font-size:18px}
 }

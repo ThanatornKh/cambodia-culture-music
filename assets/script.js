@@ -284,14 +284,6 @@
     });
   }
 
-  /* ---------------- MARQUEE (duplicate for loop) ---------------- */
-  (function () {
-    var m = $('#marq');
-    if (!m) return;
-    m.innerHTML += m.innerHTML;
-  })();
-
-
   /* ---------------- WIKIMEDIA COMMONS PHOTOS ----------------
      Special:FilePath resolves a Commons file name to the real
      image and resizes it server-side, so no API key is needed. */
@@ -359,6 +351,108 @@
     img.src = WM_FILE + wmName(file) + '?width=' + w;
     box.insertBefore(img, box.firstChild);
   });
+
+
+  /* ---------------- HERO SLIDESHOW ----------------
+     Landmark photographs, cross-faded with a slow push-in. */
+  (function () {
+    var box = document.getElementById('heroShow');
+    if (!box) return;
+    var SLIDES = [
+      { f: 'Sunrise at Angkor Wat Cambodia.jpg',
+        k: 'Angkor Wat \u00b7 Siem Reap', t: '\u0e1b\u0e23\u0e32\u0e2a\u0e32\u0e17\u0e19\u0e04\u0e23\u0e27\u0e31\u0e14\u0e22\u0e32\u0e21\u0e2d\u0e23\u0e38\u0e13\u0e23\u0e38\u0e48\u0e07' },
+      { f: '2016 Angkor, Angkor Thom, Bajon (47).jpg',
+        k: 'Bayon \u00b7 Angkor Thom', t: '\u0e43\u0e1a\u0e2b\u0e19\u0e49\u0e32\u0e2b\u0e34\u0e19\u0e41\u0e2b\u0e48\u0e07\u0e1b\u0e23\u0e32\u0e2a\u0e32\u0e17\u0e1a\u0e32\u0e22\u0e19' },
+      { f: 'Angkor Wat Ta Prohm Temple doorway overgrown with tree roots.jpg',
+        k: 'Ta Prohm \u00b7 Angkor', t: '\u0e1b\u0e23\u0e32\u0e2a\u0e32\u0e17\u0e15\u0e32\u0e1e\u0e23\u0e2b\u0e21\u0e01\u0e31\u0e1a\u0e23\u0e32\u0e01\u0e44\u0e21\u0e49\u0e1e\u0e31\u0e19\u0e1b\u0e35' },
+      { f: 'Banteay Srei 32a.jpg',
+        k: 'Banteay Srei \u00b7 Siem Reap', t: '\u0e1a\u0e31\u0e19\u0e17\u0e32\u0e22\u0e28\u0e23\u0e35 \u0e1b\u0e23\u0e32\u0e2a\u0e32\u0e17\u0e2b\u0e34\u0e19\u0e17\u0e23\u0e32\u0e22\u0e2a\u0e35\u0e0a\u0e21\u0e1e\u0e39' },
+      { f: 'The floating village-Tonle Sap lake.jpg',
+        k: 'Tonle Sap \u00b7 Floating Village', t: '\u0e15\u0e25\u0e32\u0e14\u0e19\u0e49\u0e33\u0e01\u0e25\u0e32\u0e07\u0e17\u0e30\u0e40\u0e25\u0e2a\u0e32\u0e1a\u0e42\u0e15\u0e19\u0e40\u0e25\u0e2a\u0e32\u0e1a' },
+      { f: 'Cambodia island paradise koh rong sanloem.jpg',
+        k: 'Koh Rong Sanloem \u00b7 Sihanoukville', t: '\u0e2b\u0e32\u0e14\u0e17\u0e23\u0e32\u0e22\u0e02\u0e32\u0e27\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e01\u0e32\u0e30\u0e23\u0e07\u0e2a\u0e31\u0e19\u0e40\u0e25\u0e34\u0e21' }
+    ];
+    var MS = 5600, at = 0, timer = null, imgs = [], dots = [];
+    var cap = { k: document.getElementById('hpKicker'), t: document.getElementById('hpTitle') };
+    var dotBox = document.getElementById('hpDots');
+    box.style.setProperty('--slide-ms', MS + 'ms');
+
+    SLIDES.forEach(function (sl, i) {
+      var im = new Image();
+      im.alt = sl.t;
+      im.decoding = 'async';
+      im.src = WM_FILE + wmName(sl.f) + '?width=' + (i ? 1200 : 1600);
+      im.addEventListener('load', function () { sl.ok = true; });
+      if (i === 0) {
+        im.onload = function () {
+          box.classList.remove('loading');
+          box.classList.add('has-photo');
+          show(0);
+          if (!RM) { timer = setInterval(next, MS); }
+        };
+        im.onerror = function () { box.classList.remove('loading'); };
+      }
+      imgs.push(im);
+      box.insertBefore(im, box.firstChild);
+
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', sl.t);
+      b.innerHTML = '<i></i>';
+      b.addEventListener('click', function () { if (ready(i)) { go(i); } });
+      dotBox.appendChild(b);
+      dots.push(b);
+    });
+    box.classList.add('loading');
+
+    function show(i) {
+      at = i;
+      imgs.forEach(function (im, n) { im.classList.toggle('on', n === i); });
+      dots.forEach(function (d, n) {
+        d.classList.remove('on');
+        if (n === i) { void d.offsetWidth; d.classList.add('on'); }
+      });
+      box.classList.add('swapping');
+      setTimeout(function () {
+        cap.k.textContent = SLIDES[i].k;
+        cap.t.textContent = SLIDES[i].t;
+        var cr = box.querySelector('.credit');
+        if (cr) { cr.href = WM_PAGE + wmName(SLIDES[i].f); cr.title = SLIDES[i].f; }
+        box.classList.remove('swapping');
+      }, 420);
+    }
+    function ready(i) { return imgs[i] && imgs[i].naturalWidth > 0; }
+    function next() {
+      for (var n = 1; n <= SLIDES.length; n++) {
+        var i = (at + n) % SLIDES.length;
+        if (ready(i)) { show(i); return; }
+      }
+    }
+    function go(i) {
+      if (timer) { clearInterval(timer); }
+      show(i);
+      if (!RM) { timer = setInterval(next, MS); }
+    }
+    box.addEventListener('mouseenter', function () {
+      if (timer) { clearInterval(timer); timer = null; }
+    });
+    box.addEventListener('mouseleave', function () {
+      if (!timer && !RM) { timer = setInterval(next, MS); }
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { if (timer) { clearInterval(timer); timer = null; } }
+      else if (!timer && !RM) { timer = setInterval(next, MS); }
+    });
+
+    var a = document.createElement('a');
+    a.className = 'credit';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = 'Wikimedia';
+    a.href = WM_PAGE + wmName(SLIDES[0].f);
+    box.appendChild(a);
+  })();
 
   /* ---------------- CLIMATE CHART ---------------- */
   (function () {

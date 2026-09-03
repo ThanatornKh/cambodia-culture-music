@@ -163,10 +163,6 @@
 <!-- ================= HERO ================= -->
 <section class="hero" id="home" style="padding-block:0">
   <div class="hero-sun"></div>
-  <svg class="temple back" viewBox="0 0 1200 320" fill="currentColor" data-parallax="0.06"><use href="#angkor"/></svg>
-  <svg class="temple mid" viewBox="0 0 1200 320" fill="currentColor" data-parallax="0.12"><use href="#angkor"/></svg>
-  <svg class="temple front" viewBox="0 0 1200 320" fill="currentColor" data-parallax="0.2"><use href="#angkor"/></svg>
-  <div class="hero-fade"></div>
 
   <div class="wrap hero-in">
     <div class="hero-kh">ព្រះរាជាណាចក្រកម្ពុជា</div>
@@ -184,25 +180,17 @@
       </div>
     </div>
 
-    <nav class="hero-jump" aria-label="ไปยังหัวข้อ">
-      <a href="#geo"><em>01</em><b>ภูมิศาสตร์</b><span>ภูมิประเทศ · ภูมิอากาศ · พืชพรรณ</span></a>
-      <a href="#culture"><em>02</em><b>วัฒนธรรม</b><span>การแต่งกาย · ประเพณี · อาหาร · ศาสนา</span></a>
-      <a href="#instruments"><em>03</em><b>เครื่องดนตรี</b><span>ดีด · สี · ตี · เป่า รวม 20 ชิ้น</span></a>
-      <a href="#ensembles"><em>04</em><b>การประสมวง</b><span>7 วงดนตรีเขมร</span></a>
-      <a href="#songs"><em>05</em><b>บทเพลง</b><span>6 หมวดบทเพลง</span></a>
-      <a href="#roles"><em>06</em><b>บทบาทดนตรี</b><span>5 บทบาทในสังคม</span></a>
-    </nav>
   </div>
+  <figure class="hero-photo" id="heroShow">
+    <svg class="hp-fallback" viewBox="0 0 1200 320" fill="currentColor" aria-hidden="true"><use href="#angkor"/></svg>
+    <figcaption>
+      <span id="hpKicker">Angkor Wat · Siem Reap</span>
+      <b id="hpTitle">ปราสาทนครวัดยามอรุณรุ่ง</b>
+    </figcaption>
+    <div class="hp-dots" id="hpDots" role="tablist" aria-label="เลือกภาพสถานที่"></div>
+  </figure>
   <div class="scroll-cue">Scroll <i></i></div>
 </section>
-
-<div class="marq">
-  <div class="marq-t" id="marq">
-    <span>ភូមិសាស្ត្រ ภูมิศาสตร์</span><span>វប្បធម៌ วัฒนธรรม</span><span>តន្ត្រី ดนตรี</span>
-    <span>ចាប៉ីដងវែង จะเปยดองแวง</span><span>ពិណពាទ្យ วงปินเปียต</span><span>អប្សរា ระบำอัปสรา</span>
-    <span>អាម៉ុក อาม็อก</span><span>ក្រមា ผ้ากรอม่า</span><span>បុណ្យអុំទូក เทศกาลแข่งเรือ</span>
-  </div>
-</div>
 
 <!-- ================= 01 GEOGRAPHY ================= -->
 <section id="geo">
@@ -218,9 +206,6 @@
       </div>
     </div>
 
-    <figure class="banner" data-reveal="clip" data-photo="angkor" data-w="1400" data-alt="ปราสาทนครวัดยามอาทิตย์ขึ้น">
-      <figcaption><span>Angkor Wat · Siem Reap</span><b>แผ่นดินที่อารยธรรมขอมเคยรุ่งเรืองที่สุด</b></figcaption>
-    </figure>
 
   <article class="sub" id="s11">
     <header class="sub-head" data-reveal>
