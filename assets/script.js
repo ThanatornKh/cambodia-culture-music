@@ -373,6 +373,13 @@
         k: 'Koh Rong Sanloem \u00b7 Sihanoukville', t: '\u0e2b\u0e32\u0e14\u0e17\u0e23\u0e32\u0e22\u0e02\u0e32\u0e27\u0e41\u0e2b\u0e48\u0e07\u0e40\u0e01\u0e32\u0e30\u0e23\u0e07\u0e2a\u0e31\u0e19\u0e40\u0e25\u0e34\u0e21' }
     ];
     var MS = 5600, at = 0, timer = null, imgs = [], dots = [];
+    function slideWidth() {
+      var w = (window.innerWidth || 1280) * Math.min(window.devicePixelRatio || 1, 2);
+      if (w > 2400) return 2560;
+      if (w > 1600) return 2000;
+      if (w > 1100) return 1600;
+      return 1200;
+    }
     var cap = { k: document.getElementById('hpKicker'), t: document.getElementById('hpTitle') };
     var dotBox = document.getElementById('hpDots');
     box.style.setProperty('--slide-ms', MS + 'ms');
@@ -381,7 +388,7 @@
       var im = new Image();
       im.alt = sl.t;
       im.decoding = 'async';
-      im.src = WM_FILE + wmName(sl.f) + '?width=' + (i ? 1200 : 1600);
+      im.src = WM_FILE + wmName(sl.f) + '?width=' + slideWidth();
       im.addEventListener('load', function () { sl.ok = true; });
       if (i === 0) {
         im.onload = function () {
