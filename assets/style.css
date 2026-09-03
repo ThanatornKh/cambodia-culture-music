@@ -583,7 +583,8 @@ footer p{color:rgba(239,233,223,.55);font-size:14px;margin-top:16px;max-width:40
   .hero-photo img,.hero-photo img.on{transition:opacity .2s;transform:none}
   .hp-dots button.on i{transition:none;width:100%}
 }
-.hero-photo .credit{top:auto;bottom:12px;right:12px}
+.hero-photo .credit{top:clamp(12px,2vh,20px);right:var(--pad);bottom:auto}
+@media (max-width:560px){.hero-photo .credit{right:14px;font-size:8.5px;padding:3px 6px}}
 .hero-photo:hover .credit{opacity:1}
 
 .hero .scroll-cue{bottom:clamp(70px,11vh,120px);color:rgba(255,255,255,.85);z-index:3}
